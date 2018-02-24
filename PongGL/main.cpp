@@ -57,7 +57,7 @@ int main(int argc, const char * argv[]) {
     JustDrawGraphicsComponent justDrawGraphics;
     
     /***************
-     * Set up Enitities
+     * Set up Entities
      ***************/
     std::vector<Entity*> gameEntities;
     
