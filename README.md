@@ -53,7 +53,7 @@ This will be fixed soon.
 
 # Screenshots
 
-### Balls bouncing against walls
+### Balls with different speeds and weight bouncing against walls
 
 ![Alt text](screenshots/PongGL_BallsBouncing.gif?raw=true "Balls bouncing against walls")
 
