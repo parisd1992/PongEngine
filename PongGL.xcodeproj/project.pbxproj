@@ -23,7 +23,6 @@
 		BFB924332029079100FC172D /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB924312029079100FC172D /* Entity.cpp */; };
 		BFB9243F20290AAB00FC172D /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9243D20290AAB00FC172D /* World.cpp */; };
 		BFB9244220290E3200FC172D /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9244020290E3200FC172D /* Graphics.cpp */; };
-		BFB9244520290ED600FC172D /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9244320290ED600FC172D /* Sprite.cpp */; };
 		BFD14627202BBB3900001132 /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = BFD14626202BBB3900001132 /* Shaders */; };
 /* End PBXBuildFile section */
 
@@ -74,8 +73,6 @@
 		BFB9243E20290AAB00FC172D /* World.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
 		BFB9244020290E3200FC172D /* Graphics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
 		BFB9244120290E3200FC172D /* Graphics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
-		BFB9244320290ED600FC172D /* Sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
-		BFB9244420290ED600FC172D /* Sprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sprite.hpp; sourceTree = "<group>"; };
 		BFD14626202BBB3900001132 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,8 +125,6 @@
 				BFB9243E20290AAB00FC172D /* World.hpp */,
 				BFB9244020290E3200FC172D /* Graphics.cpp */,
 				BFB9244120290E3200FC172D /* Graphics.hpp */,
-				BFB9244320290ED600FC172D /* Sprite.cpp */,
-				BFB9244420290ED600FC172D /* Sprite.hpp */,
 				BF623CFC202D08640052E752 /* Renderer.cpp */,
 				BF623CFD202D08640052E752 /* Renderer.hpp */,
 				BF8F1B412030D94D00F7607B /* Math.cpp */,
@@ -237,7 +232,6 @@
 				BF346CE1202286370025B297 /* main.cpp in Sources */,
 				BF56C9232032419E0037C443 /* JustDrawGraphicsComponent.cpp in Sources */,
 				BFB924332029079100FC172D /* Entity.cpp in Sources */,
-				BFB9244520290ED600FC172D /* Sprite.cpp in Sources */,
 				BF6AF73F20310742005F6466 /* GoalPhysicsComponent.cpp in Sources */,
 				BF56C920203239900037C443 /* FollowEntityAIComponent.cpp in Sources */,
 				BFB9243F20290AAB00FC172D /* World.cpp in Sources */,

@@ -10,7 +10,7 @@
 #include "Graphics.hpp"
 #include "Entity.hpp"
 
-void JustDrawGraphicsComponent::update(Entity &o, Graphics &graphics)
+void JustDrawGraphicsComponent::update(Entity& o, Graphics& graphics)
 {
-    graphics.draw(sprite_, o.getX(), o.getY());
+    graphics.addToFrame(&o);
 }

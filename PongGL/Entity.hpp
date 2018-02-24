@@ -20,10 +20,14 @@ class AIComponent;
 class World;
 class Graphics;
 
+/**
+ An Entity is a game object with behaviour that is driven by its components.
+ Its x and y fields represent the position of the centre of the Entity.
+ **/
 class Entity
 {
 private:
-    int type_;
+    int id_;
     InputComponent* input_;
     PhysicsComponent* physics_;
     AIComponent* ai_;
@@ -36,9 +40,9 @@ private:
     unsigned int weight_;
     
 public:
-    Entity(int type, float x, float y, unsigned int width, unsigned int height, int velocity, double trajectory, unsigned int weight,
+    Entity(int id, float x, float y, unsigned int width, unsigned int height, int velocity, double trajectory, unsigned int weight,
            InputComponent* input, PhysicsComponent* physics, AIComponent* ai, GraphicsComponent* graphics)
-    : type_(type),
+    : id_(id),
     x_(x),
     y_(y),
     width_(width),
@@ -56,11 +60,12 @@ public:
     ~Entity()
     {}
     
+    /** Updates the entity's state **/
     void update(World& world, Graphics& graphics);
     
-    int getType()
+    int getId()
     {
-        return type_;
+        return id_;
     }
     
     void setX(float x)

@@ -13,6 +13,9 @@
 
 class Entity;
 
+/**
+ Responsble for updating an entity based on some input 
+ **/
 class InputComponent
 {
 public:

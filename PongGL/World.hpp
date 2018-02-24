@@ -13,10 +13,14 @@
 #include <vector>
 #include "Entity.hpp"
 
+/**
+ The World class is responsible for creating a 'world' environment.
+ It provides physics to any Entity that belongs to it.
+ **/
 class World
 {
 private:
-    std::vector<Entity*> gameEntities_;
+    std::vector<Entity*> physicsEntities_;
     
 public:
     World() {}
@@ -30,17 +34,12 @@ public:
     void handleCollision(Entity* entity, Callback callback)
     {
         //move the entity
-        if (entity->getType() == 0)
-        {
-            printf("t: %0.9f\n", entity->getTrajectory());
-            printf("x: %0.9f\n", entity->getX());
-        }
-        
+        //TODO: entity should not move by full velocity if there is a collision mid way
         entity->setX((float) entity->getX()+entity->getVelocity() * cosf(entity->getTrajectory()));
         entity->setY((float) entity->getY()+entity->getVelocity() * sinf(entity->getTrajectory()));
         
         //check for collisions
-        for(auto it = gameEntities_.begin(); it != gameEntities_.end(); it++)
+        for(auto it = physicsEntities_.begin(); it != physicsEntities_.end(); ++it)
         {
             if(entity != *it)
             {
@@ -85,17 +84,13 @@ public:
                     }
                     else
                     {
-                        //where was the collision?  Top/bottom lines or left/right?
-                        //Left/Right?
-                        if (e1MinX < e2MinX && e1MaxX >= e2MinX) //right hit left so we rotate the normal by 270 deg
+                        //Where was the collision?  Top/bottom lines or left/right?
+                        if ((e1MinX < e2MinX && e1MaxX >= e2MinX) ||
+                            (e1MinX <= e2MaxX && e1MaxX > e2MaxX)) //left/right?
                         {
                             entity->setTrajectory((2*Math::PI - entity->getTrajectory())+(Math::PI));
                         }
-                        else if (e1MinX <= e2MaxX && e1MaxX > e2MaxX) //left hit right so we rotate the normal by 180 deg
-                        {
-                            entity->setTrajectory((2*Math::PI - entity->getTrajectory())+(Math::PI));
-                        }
-                        else
+                        else //top/bottom
                         {
                             entity->setTrajectory(2*Math::PI - entity->getTrajectory());
                         }
@@ -110,10 +105,18 @@ public:
                     }
                     else
                     {
-                        //if entity is lighter than what it's hit, velocity = v(entity) + v(hit)
+                        //if entity is lighter than what it's hit:
+                        //velocity = velocity(entity) + 1
                         if (entity->getWeight() != 0 && (entity->getWeight() < hitEntity->getWeight() || hitEntity->getWeight() == 0))
                         {
-                            entity->setVelocity(entity->getVelocity()+hitEntity->getVelocity());
+                            if (entity->getVelocity() < 0) //we want to keep the direction of the velocity (+ / -)
+                            {
+                                entity->setVelocity(entity->getVelocity()-1);
+                            }
+                            else
+                            {
+                                entity->setVelocity(entity->getVelocity()+1);
+                            }
                         }
                         //so if entities are the same weight, their velocities do not change
                     }

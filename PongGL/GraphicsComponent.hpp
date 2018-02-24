@@ -14,6 +14,9 @@
 class Entity;
 class Graphics;
 
+/**
+ Responsble for updating an entity based on graphics
+ **/
 class GraphicsComponent
 {
 public:

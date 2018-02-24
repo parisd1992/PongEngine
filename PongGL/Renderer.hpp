@@ -9,94 +9,63 @@
 #ifndef Renderer_hpp
 #define Renderer_hpp
 
-#include "Sprite.hpp"
 #include <stdio.h>
+#include "Graphics.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 
-class RenderQueue
-{
-private:
-    static const u_int32_t MAX_BUFFER = 1024;
-    
-private:
-    float verticies[MAX_BUFFER];
-    int elements[MAX_BUFFER];
-    
-    u_int32_t vertexCount_{0};
-    u_int32_t elementCount_{0};
-    u_int32_t queueCount_{0};
-    
-    float screenWidth_;
-    float screenHeight_;
-    
-    
-public:
-    RenderQueue(float screenWidth, float screenHeight) : screenWidth_(screenWidth), screenHeight_(screenHeight) {}
-    ~RenderQueue() {}
-    
-    void addToQueue(Sprite* sprite, float x, float y);
-    void clearQueue();
-    
-    float* getVertices()
-    {
-        return verticies;
-    }
-    
-    int* getElements()
-    {
-        return elements;
-    }
-    
-    u_int32_t getVertexCount()
-    {
-        return vertexCount_;
-    }
-    
-    u_int32_t getElementCount()
-    {
-        return elementCount_;
-    }
-    
-};
-
-
-
 class Renderer
 {
 private:
-    static const GLuint BUFFER_COUNT = 1;
+    static const GLuint MAX_BUFFER_SIZE = 1024;
+
 private:
-    RenderQueue* queue_;
+    /** What we want to render this frame **/
+    Graphics* frame_;
+    
+    /** Screen Size **/
+    GLfloat screenWidth_;
+    GLfloat screenHeight_;
+    
+    /** Buffer Objects **/
+    GLuint vao; //vertex array object
+    GLuint vbo; //vertex buffer object
+    GLuint ebo; //element buffer object
     
     /** Buffers **/
-    GLuint vao; //vertex array object
-    GLuint vbo[BUFFER_COUNT]; //double vertex buffer object
-    GLuint ebo[BUFFER_COUNT]; //double element buffer object
+    GLfloat vertexBuffer_[MAX_BUFFER_SIZE];
+    GLuint elementBuffer_[MAX_BUFFER_SIZE];
+    
+    /** Counts **/
+    GLuint vertexCount_{0}; //number of verticies we added to vertex buffer (includes colours)
+    GLuint elementCount_{0}; //number of elements we added to element buffer
+    GLuint frameVertexCount_{0}; //number of triangle verticies we have read from the frame
     
     /** Shaders **/
     GLuint shaderProgram_;
     GLuint vertexShader_;
     GLuint fragmentShader_;
+
+    /** init methods **/
+    void initBuffers();
+    void initShaders();
     
-    /** counter to keep track of the buffer we are rendering to **/
-    GLuint currentBufferCount{0};
-    
-    /** Private init functions **/
-    //void initBuffers();
-    //void initShaders();
+    /** add the current frame to the buffers for rendering **/
+    void addFrameToBuffers();
     
 public:
     
-    Renderer(RenderQueue* queue) : queue_{queue}
+    Renderer(Graphics* frame, GLfloat screenWidth, GLfloat screenHeight) : frame_{frame}, screenWidth_{screenWidth}, screenHeight_{screenHeight}
     {};
     
     ~Renderer();
     
+    /** initialise the renderer **/
     void init();
     
+    /** render what is in the queue (and clear it) **/
     void render();
 };
 

@@ -11,14 +11,11 @@
 
 #include <stdio.h>
 #include "GraphicsComponent.hpp"
-#include "Sprite.hpp"
 
 class JustDrawGraphicsComponent : public GraphicsComponent
 {
-private:
-    Sprite* sprite_;
 public:
-    JustDrawGraphicsComponent(Sprite* sprite) : sprite_(sprite) {}
+    JustDrawGraphicsComponent(){}
     ~JustDrawGraphicsComponent() {}
     
     virtual void update(Entity& o, Graphics& graphics);

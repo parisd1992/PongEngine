@@ -14,6 +14,9 @@
 class Entity;
 class World;
 
+/**
+ Responsble for updating an entity based on physics
+ **/
 class PhysicsComponent
 {
 public:

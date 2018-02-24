@@ -10,5 +10,5 @@
 
 void World::addEntity(Entity *entity)
 {
-    gameEntities_.emplace_back(entity);
+    physicsEntities_.emplace_back(entity);
 }

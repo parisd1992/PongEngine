@@ -9,107 +9,27 @@
 #include "ShaderLoader.hpp"
 #include "Renderer.hpp"
 
-void RenderQueue::addToQueue(Sprite *sprite, float x, float y)
-{
-    //1. generate our points
-    unsigned int w = sprite->getWidth();
-    unsigned int h = sprite->getHeight();
-    float r = sprite->getRed();
-    float g = sprite->getGreen();
-    float b = sprite->getBlue();
-    
-    float left = (w * -1.0f)/2;
-    float right = w/2;
-    float top = h/2;
-    float bottom = (h * -1.0f)/2;
-    
-    //2. create our model, view, projection
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f));
-    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 projection = glm::ortho(screenWidth_/2, -screenWidth_/2, -screenHeight_/2, screenHeight_/2, -0.1f, 1.0f);
-    glm::mat4 mvp = projection * view * model;
-    
-    glm::vec4 topLeftPoint = mvp * glm::vec4(left, top, 0.0f, 1.0f );
-    glm::vec4 topRightPoint = mvp * glm::vec4(right, top, 0.0f, 1.0f);
-    glm::vec4 bottomLeftPoint = mvp * glm::vec4(left, bottom, 0.0f, 1.0f);
-    glm::vec4 bottomRightPoint = mvp * glm::vec4(right, bottom, 0.0f, 1.0f);
-    
-    //3. add to the vertex buffer
-    
-    //p1
-    verticies[vertexCount_++] = topLeftPoint.x;
-    verticies[vertexCount_++] = topLeftPoint.y;
-    verticies[vertexCount_++] = r;
-    verticies[vertexCount_++] = g;
-    verticies[vertexCount_++] = b;
-    
-    //p2
-    verticies[vertexCount_++] = topRightPoint.x;
-    verticies[vertexCount_++] = topRightPoint.y;
-    verticies[vertexCount_++] = r;
-    verticies[vertexCount_++] = g;
-    verticies[vertexCount_++] = b;
-    
-    //p3
-    verticies[vertexCount_++] = bottomRightPoint.x;
-    verticies[vertexCount_++] = bottomRightPoint.y;
-    verticies[vertexCount_++] = r;
-    verticies[vertexCount_++] = g;
-    verticies[vertexCount_++] = b;
-    
-    //p4
-    verticies[vertexCount_++] = bottomLeftPoint.x;
-    verticies[vertexCount_++] = bottomLeftPoint.y;
-    verticies[vertexCount_++] = r;
-    verticies[vertexCount_++] = g;
-    verticies[vertexCount_++] = b;
-    
-    //4. add to the element buffer - points added as (for 1st sprite): 0, 1, 2, 2, 3, 0
-    elements[elementCount_++] = 0 + queueCount_*4;
-    elements[elementCount_++] = 1 + queueCount_*4;
-    elements[elementCount_++] = 2 + queueCount_*4;
-    elements[elementCount_++] = 2 + queueCount_*4;
-    elements[elementCount_++] = 3 + queueCount_*4;
-    elements[elementCount_++] = 0 + queueCount_*4;
-    
-    //increase the queue count now that we have finished adding to the queue
-    queueCount_ += 1;
-};
 
-
-void RenderQueue::clearQueue()
+void Renderer::initBuffers()
 {
-    vertexCount_ = 0;
-    elementCount_ = 0;
-    queueCount_ = 0;
-}
-
-void Renderer::init()
-{
-    glewExperimental = GL_TRUE;
-    glewInit();
-    
-    /***************
-     * Set up buffers
-     ***************/
-    
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     
     //vertex buffer
-    glGenBuffers(BUFFER_COUNT, vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[currentBufferCount]); //make vbo the active buffer
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); //make vbo the active buffer
     
     //element buffers
-    glGenBuffers(BUFFER_COUNT, ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[currentBufferCount]); //make ebo the active buffer
-    
-    /***************
-     * Set up Shaders
-     ***************/
-    
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //make ebo the active buffer
+}
+
+void Renderer::initShaders()
+{
     //load shaders
     ShaderLoader shaderLoader;
+    
+    //TODO: file locations are hardcoded!
     vertexShader_ = shaderLoader.loadShaderFromFile("/Users/davidparis/Documents/C++/PongGL/Shaders/vertex_shader.glsl",
                                                     GL_VERTEX_SHADER);
     fragmentShader_ = shaderLoader.loadShaderFromFile("/Users/davidparis/Documents/C++/PongGL/Shaders/fragment_shader.glsl",
@@ -126,7 +46,18 @@ void Renderer::init()
     //link and use the shader programs
     glLinkProgram(shaderProgram_);
     glUseProgram(shaderProgram_);
+}
+
+
+void Renderer::init()
+{
+    glewExperimental = GL_TRUE;
+    glewInit();
     
+    initBuffers();
+    initShaders();
+    
+    //the vertex buffer stores floats as an array of: [ x, y, r, g, b ]
     GLint posAttrib = glGetAttribLocation(shaderProgram_, "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), 0);
@@ -138,24 +69,72 @@ void Renderer::init()
     glBindVertexArray(0);
 }
 
+void Renderer::addFrameToBuffers()
+{
+    std::vector<Drawable> currentFrame = frame_->getCurrentFrame();
+    
+    for(auto frameIter = currentFrame.begin(); frameIter != currentFrame.end(); ++frameIter)
+    {
+        auto verticies = frameIter->verticies_;
+        auto elementIndicies = frameIter->verticeIndexes_;
+        
+        //Add our element indices to the element buffer
+        for(auto elementIter = elementIndicies.begin(); elementIter != elementIndicies.end(); ++elementIter)
+        {
+            //We do this before adding our verticies because when we add to element buffer,
+            //we need to shift indexes by the number of verticies we have rendered in the frame up until this point.
+            elementBuffer_[elementCount_++] = *elementIter + frameVertexCount_;
+        }
+        
+        //Add our vertice data in object coordinates to the vertex buffer in screen coordinates
+        for(auto verticeIter = verticies.begin(); verticeIter != verticies.end(); ++verticeIter)
+        {
+            //Create our model, view, projection
+            glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(frameIter->position_.x_, frameIter->position_.y_, 0.0f));
+            glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            glm::mat4 projection = glm::ortho(screenWidth_/2, -screenWidth_/2, -screenHeight_/2, screenHeight_/2, -0.1f, 1.0f);
+            glm::mat4 mvp = projection * view * model;
+            
+            //Create our translated point in screen coordinates
+            glm::vec4 point = mvp * glm::vec4(verticeIter->x_, verticeIter->y_, 0.0f, 1.0f );
+            
+            //Add to the vertex buffer
+            vertexBuffer_[vertexCount_++] = point.x;
+            vertexBuffer_[vertexCount_++] = point.y;
+            vertexBuffer_[vertexCount_++] = frameIter->colour_.red_;
+            vertexBuffer_[vertexCount_++] = frameIter->colour_.green_;
+            vertexBuffer_[vertexCount_++] = frameIter->colour_.blue_;
+            
+            frameVertexCount_ += 1;
+        }
+    }
+    
+    //now that the frame is added we can clear it
+    frame_->clearCurrentFrame();
+}
+
 void Renderer::render()
 {
+    //add the frame to the buffers
+    addFrameToBuffers();
+    
     glBindVertexArray(vao);
     
     //stream the data to the buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[currentBufferCount]); //make vbo the active array buffer
-    glBufferData(GL_ARRAY_BUFFER, sizeof(queue_->getVertices())*queue_->getVertexCount(),queue_->getVertices(), GL_STREAM_DRAW); //send the vertices to the buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); //make vbo the active array buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer_), vertexBuffer_, GL_STREAM_DRAW); //send the vertices to the buffer
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[currentBufferCount]); //make ebo the active array buffer
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(queue_->getElements())*queue_->getElementCount(), queue_->getElements(), GL_STREAM_DRAW); //send the elements to the buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //make ebo the active array buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elementBuffer_), elementBuffer_, GL_STREAM_DRAW); //send the elements to the buffer
 
     //draw
     glClear( GL_COLOR_BUFFER_BIT );
-    glDrawElements(GL_TRIANGLES, queue_->getElementCount(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, elementCount_, GL_UNSIGNED_INT, 0);
 
-    //update the buffer count and reset the queue
-    currentBufferCount = ++currentBufferCount % BUFFER_COUNT;
-    queue_->clearQueue();
+    //reset the counts
+    vertexCount_ = 0;
+    elementCount_ = 0;
+    frameVertexCount_ = 0;
 }
 
 Renderer::~Renderer()
@@ -164,8 +143,8 @@ Renderer::~Renderer()
     glDeleteShader(fragmentShader_);
     glDeleteShader(vertexShader_);
     
-    glDeleteBuffers(BUFFER_COUNT, vbo);
-    glDeleteBuffers(BUFFER_COUNT, ebo);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
 }
 
