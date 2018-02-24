@@ -82,12 +82,13 @@ public:
         {
             --continousIterations;
         }
+        //calculate time step
+        float timeStep = continousIterations == 0 ? 1.0f : (float) CONTINUOUS_COLLISION_ITERATION_SPEED / (float) currentSpeed;
         
         unsigned int currentIteration = 0;
         while(currentIteration <= continousIterations)
         {
             //START CONTINUOUS COLLISION ITERATION
-            float timeStep = continousIterations == 0 ? 1.0f : (float) CONTINUOUS_COLLISION_ITERATION_SPEED / (float) currentSpeed;
             moveEntity(*entity, timeStep);
             
             //check for collisions
