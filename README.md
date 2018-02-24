@@ -1,5 +1,7 @@
-# PongEngine [Development still in progress]
+# PongEngine [Development In Progress]
 An implementation of Pong using a physics and OpenGL rendering engine written from scratch in C++.
+
+Development is in progress.
 
 Game is programmed to run at 60 FPS.
 
