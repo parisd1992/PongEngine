@@ -68,7 +68,7 @@ int main(int argc, const char * argv[]) {
     Entity ball2 {1, 250.0f, 0.0f, 10, 10, -5, 2*Math::PI/9, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball2);
     gameEntities.emplace_back(&ball2);
-    
+
     Entity ball3 {2, 50.0f, 0.0f, 10, 10, 5, Math::PI/4, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball3);
     gameEntities.emplace_back(&ball3);
@@ -76,7 +76,7 @@ int main(int argc, const char * argv[]) {
     Entity ball4 {3, 200.0f, 0.0f, 10, 10, -5, 2*Math::PI/3, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball4);
     gameEntities.emplace_back(&ball4);
-    
+
     Entity ball5 {4, 100.0f, 0.0f, 10, 10, 5, Math::PI/6, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball5);
     gameEntities.emplace_back(&ball5);

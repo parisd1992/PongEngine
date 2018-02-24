@@ -13,6 +13,17 @@
 #include <vector>
 #include "Entity.hpp"
 
+
+/**
+ Holds information on a colission.
+ If isCollision and !isLeftRightCollision then is Top / Bottom collision
+ **/
+struct Collision
+{
+    bool isCollision = false;
+    bool isLeftRightCollision = false;
+};
+
 /**
  The World class is responsible for creating a 'world' environment.
  It provides physics to any Entity that belongs to it.
@@ -20,7 +31,28 @@
 class World
 {
 private:
+    static const unsigned int MAX_SPEED = 100;
+    
+    /*
+     Controls the speed we want to move for each iteration of continuos collision detection.
+     Changing this could reduce / increase the accuracy at the cost of more compute per frame
+     */
+    static const unsigned int CONTINUOUS_COLLISION_ITERATION_SPEED = 5;
+private:
     std::vector<Entity*> physicsEntities_;
+    Collision collisionData_;
+    
+    /**
+     Moves an entity according to its velocity and trajectory by a time step.
+     Assumes timeStep is >=0 && <=1, else will set to the closer of 0 or 1
+     **/
+    void moveEntity(Entity& entity, float timeStep);
+    
+    /** Updates the collisionData_ between entity1 and entity2 **/
+    void updateCollisionData(Entity& entity1, Entity& entity2);
+    
+    /** Updates the entity trajectory based on collision data **/
+    void updateTrajectory(Entity& entity, Collision& collisionData);
     
 public:
     World() {}
@@ -29,102 +61,85 @@ public:
     /** Adds an entity to the world **/
     void addEntity(Entity* entity);
     
-    /** handles any collisions in the world for an entity and provides and option for a callback  **/
+    /**
+     Handles any collisions in the world for an entity and provides and option for a callback.
+     Uses a trivial implementation of continuous collision detection, which works best for objects with a width/height of at least 10
+     **/
     template<class Callback>
     void handleCollision(Entity* entity, Callback callback)
     {
         //move the entity
-        //TODO: entity should not move by full velocity if there is a collision mid way
-        entity->setX((float) entity->getX()+entity->getVelocity() * cosf(entity->getTrajectory()));
-        entity->setY((float) entity->getY()+entity->getVelocity() * sinf(entity->getTrajectory()));
+        //We take an iteratative approach to check for continuous collision
+        unsigned int currentSpeed = abs(entity->getVelocity());
+        unsigned int continousIterations = currentSpeed / CONTINUOUS_COLLISION_ITERATION_SPEED;
         
-        //check for collisions
-        for(auto it = physicsEntities_.begin(); it != physicsEntities_.end(); ++it)
+        unsigned int currentIteration = 0;
+        
+        //START CONTINUOUS ITERATION
+        while(currentIteration <= continousIterations)
         {
-            if(entity != *it)
+            float timeStep = continousIterations == 0 ? 1.0f : 1.0f / (float) continousIterations;
+            moveEntity(*entity, timeStep);
+            
+            //check for collisions
+            for(auto it = physicsEntities_.begin(); it != physicsEntities_.end(); ++it)
             {
-                auto& hitEntity = *it;
-                //check the if the bounding boxes intersect:
-                //min is top left, max is bottom right
-                int e1MinX = entity->getX() - (entity)->getWidth() / 2;
-                int e1MinY = entity->getY() + (entity)->getHeight() / 2;
-                
-                int e1MaxX = entity->getX() + (entity)->getWidth() / 2;
-                int e1MaxY = entity->getY() - (entity)->getHeight() / 2;
-                
-                int e2MinX = hitEntity->getX() - hitEntity->getWidth() / 2;
-                int e2MinY = hitEntity->getY() + hitEntity->getHeight() / 2;
-                
-                int e2MaxX = hitEntity->getX() + hitEntity->getWidth() / 2;
-                int e2MaxY = hitEntity->getY() - hitEntity->getHeight() / 2;
-                
-                if ((e1MaxX < e2MinX || e1MinX > e2MaxX) || (e1MaxY > e2MinY || e1MinY < e2MaxY))
+                if(entity != *it)
                 {
-                    continue; //no collision
-                }
-                else //collision
-                {
-                    //if the entity isn't moving - do nothing
-                    if (!entity->getVelocity())
+                    auto& hitEntity = *it;
+                    updateCollisionData(*entity, *hitEntity);
+                    
+                    if (!collisionData_.isCollision)
                     {
                         continue;
                     }
-                    
-                    //update the trajectory:
-                    //- 0 trajectory becomes 180 degrees
-                    //- 180 trajetory becomes 0
-                    //- angle of incidence = angle of reflection in opposite direction
-                    if (0 == entity->getTrajectory())
+                    else //collision
                     {
-                        entity->setTrajectory(Math::PI);
-                    }
-                    else if (Math::PI == entity->getTrajectory())
-                    {
-                        entity->setTrajectory(0);
-                    }
-                    else
-                    {
-                        //Where was the collision?  Top/bottom lines or left/right?
-                        if ((e1MinX < e2MinX && e1MaxX >= e2MinX) ||
-                            (e1MinX <= e2MaxX && e1MaxX > e2MaxX)) //left/right?
+                        //if the entity isn't moving - do nothing
+                        if (!entity->getVelocity())
                         {
-                            entity->setTrajectory((2*Math::PI - entity->getTrajectory())+(Math::PI));
+                            continue;
                         }
-                        else //top/bottom
+                        
+                        updateTrajectory(*entity, collisionData_);
+                        
+                        //update the velocity
+                        //0 weight = infinite weight
+                        //if 2 entities of infinite weight hit, velocity becomes 0
+                        if (entity->getWeight() == 0 && hitEntity->getWeight() == 0)
                         {
-                            entity->setTrajectory(2*Math::PI - entity->getTrajectory());
+                            entity->setVelocity(0);
                         }
-                    }
-                    
-                    //update the velocity
-                    //0 weight = infinite weight
-                    //if 2 entities of infinite weight hit, velocity becomes 0
-                    if (entity->getWeight() == 0 && hitEntity->getWeight() == 0)
-                    {
-                        entity->setVelocity(0);
-                    }
-                    else
-                    {
-                        //if entity is lighter than what it's hit:
-                        //velocity = velocity(entity) + 1
-                        if (entity->getWeight() != 0 && (entity->getWeight() < hitEntity->getWeight() || hitEntity->getWeight() == 0))
+                        else
                         {
-                            if (entity->getVelocity() < 0) //we want to keep the direction of the velocity (+ / -)
+                            //if entity is lighter than what it's hit:
+                            //velocity = velocity(entity) + 1
+                            if (entity->getWeight() != 0 && (entity->getWeight() < hitEntity->getWeight() || hitEntity->getWeight() == 0))
                             {
-                                entity->setVelocity(entity->getVelocity()-1);
+                                //only update the velocity if it is less than MAX_SPEED
+                                if (abs(entity->getVelocity()) < MAX_SPEED)
+                                {
+                                    if (entity->getVelocity() < 0) //we want to keep the direction of the velocity (+ / -)
+                                    {
+                                        entity->setVelocity(entity->getVelocity()-1);
+                                    }
+                                    else
+                                    {
+                                        entity->setVelocity(entity->getVelocity()+1);
+                                    }
+                                }
                             }
-                            else
-                            {
-                                entity->setVelocity(entity->getVelocity()+1);
-                            }
+                            //so if entities are the same weight, their velocities do not change
                         }
-                        //so if entities are the same weight, their velocities do not change
+                        
+                        //call the callback function
+                        callback();
                     }
-                    
-                    //call the callback function
-                    callback();
                 }
             }
+            
+            ++currentIteration;
+            //END CONTINUOUS ITERATION
         }
     }
 };
