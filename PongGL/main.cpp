@@ -61,19 +61,19 @@ int main(int argc, const char * argv[]) {
      ***************/
     std::vector<Entity*> gameEntities;
     
-    Entity ball1 {0, -250.0f, 0.0f, 10, 10, 5, Math::PI/7, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
+    Entity ball1 {0, -250.0f, 0.0f, 10, 10, 1, Math::PI/7, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball1);
     gameEntities.emplace_back(&ball1);
-    
-    Entity ball2 {1, 250.0f, 0.0f, 10, 10, -5, 2*Math::PI/9, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
+
+    Entity ball2 {1, 250.0f, 0.0f, 10, 10, -2, 2*Math::PI/9, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball2);
     gameEntities.emplace_back(&ball2);
 
-    Entity ball3 {2, 50.0f, 0.0f, 10, 10, 5, Math::PI/4, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
+    Entity ball3 {2, 50.0f, 0.0f, 10, 10, 3, Math::PI/4, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball3);
     gameEntities.emplace_back(&ball3);
-    
-    Entity ball4 {3, 200.0f, 0.0f, 10, 10, -5, 2*Math::PI/3, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
+
+    Entity ball4 {3, 200.0f, 0.0f, 10, 10, -4, 2*Math::PI/3, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics};
     world.addEntity(&ball4);
     gameEntities.emplace_back(&ball4);
 
@@ -116,7 +116,9 @@ int main(int argc, const char * argv[]) {
         glfwPollEvents(); //window events
 
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        {
             glfwSetWindowShouldClose(window, GL_TRUE);
+        }
         
         auto t_end = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = t_end-t_start;

@@ -54,6 +54,9 @@ private:
     /** Updates the entity trajectory based on collision data **/
     void updateTrajectory(Entity& entity, Collision& collisionData);
     
+    /** Updates the entity velocity based on the entity it's hit **/
+    void updateVelocity(Entity& entity, Entity& hitEntity);
+    
 public:
     World() {}
     ~World() {}
@@ -68,17 +71,23 @@ public:
     template<class Callback>
     void handleCollision(Entity* entity, Callback callback)
     {
-        //move the entity
         //We take an iteratative approach to check for continuous collision
         unsigned int currentSpeed = abs(entity->getVelocity());
         unsigned int continousIterations = currentSpeed / CONTINUOUS_COLLISION_ITERATION_SPEED;
+        unsigned int speedRemaining = currentSpeed % CONTINUOUS_COLLISION_ITERATION_SPEED;
+        
+        //if currentSpeed divides CONTINUOUS_COLLISION_ITERATION_SPEED exactly
+        //we don't want to run an iteration for 0 remaining speed
+        if (continousIterations > 0 && speedRemaining == 0)
+        {
+            --continousIterations;
+        }
         
         unsigned int currentIteration = 0;
-        
-        //START CONTINUOUS ITERATION
         while(currentIteration <= continousIterations)
         {
-            float timeStep = continousIterations == 0 ? 1.0f : 1.0f / (float) continousIterations;
+            //START CONTINUOUS COLLISION ITERATION
+            float timeStep = continousIterations == 0 ? 1.0f : (float) CONTINUOUS_COLLISION_ITERATION_SPEED / (float) currentSpeed;
             moveEntity(*entity, timeStep);
             
             //check for collisions
@@ -93,7 +102,7 @@ public:
                     {
                         continue;
                     }
-                    else //collision
+                    else
                     {
                         //if the entity isn't moving - do nothing
                         if (!entity->getVelocity())
@@ -102,36 +111,8 @@ public:
                         }
                         
                         updateTrajectory(*entity, collisionData_);
-                        
-                        //update the velocity
-                        //0 weight = infinite weight
-                        //if 2 entities of infinite weight hit, velocity becomes 0
-                        if (entity->getWeight() == 0 && hitEntity->getWeight() == 0)
-                        {
-                            entity->setVelocity(0);
-                        }
-                        else
-                        {
-                            //if entity is lighter than what it's hit:
-                            //velocity = velocity(entity) + 1
-                            if (entity->getWeight() != 0 && (entity->getWeight() < hitEntity->getWeight() || hitEntity->getWeight() == 0))
-                            {
-                                //only update the velocity if it is less than MAX_SPEED
-                                if (abs(entity->getVelocity()) < MAX_SPEED)
-                                {
-                                    if (entity->getVelocity() < 0) //we want to keep the direction of the velocity (+ / -)
-                                    {
-                                        entity->setVelocity(entity->getVelocity()-1);
-                                    }
-                                    else
-                                    {
-                                        entity->setVelocity(entity->getVelocity()+1);
-                                    }
-                                }
-                            }
-                            //so if entities are the same weight, their velocities do not change
-                        }
-                        
+                        updateVelocity(*entity, *hitEntity);
+
                         //call the callback function
                         callback();
                     }
@@ -139,7 +120,7 @@ public:
             }
             
             ++currentIteration;
-            //END CONTINUOUS ITERATION
+            //END CONTINUOUS COLLISION ITERATION
         }
     }
 };
