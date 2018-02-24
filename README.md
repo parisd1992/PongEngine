@@ -3,7 +3,7 @@ An implementation of Pong using a physics and OpenGL rendering engine written fr
 
 [Development still in progress]
 
-Physics Engine features:
+### Physics Engine features:
 (See World.hpp + screenshots below for examples)
 
 - Physics entities travel in a straight line based on a trajectory and velocity
@@ -12,7 +12,7 @@ Physics Engine features:
 - Option for entities to provide a callback to be called when there is a collision (useful for updating score)
 - Implementation of continuous collision detection to avoid entities missing each other as their velocity increases
 
-OpenGL Rendering Engine features:
+### OpenGL Rendering Engine features:
 (see Graphics.hpp and Renderer.hpp)
 
 - Entities to be drawn are added to a queue as Drawables which are read by the render engine (potential to support multiple threads).
