@@ -19,7 +19,6 @@
 		BF6AF73F20310742005F6466 /* GoalPhysicsComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF6AF73D20310742005F6466 /* GoalPhysicsComponent.cpp */; };
 		BF6AF74220310F3E005F6466 /* PlayerInputComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF6AF74020310F3E005F6466 /* PlayerInputComponent.cpp */; };
 		BF7D9641203E1D31002D0F92 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = BF7D9640203E1D31002D0F92 /* CMakeLists.txt */; };
-		BF8F1B432030D94D00F7607B /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF8F1B412030D94D00F7607B /* Math.cpp */; };
 		BFB924332029079100FC172D /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB924312029079100FC172D /* Entity.cpp */; };
 		BFB9243F20290AAB00FC172D /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9243D20290AAB00FC172D /* World.cpp */; };
 		BFB9244220290E3200FC172D /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9244020290E3200FC172D /* Graphics.cpp */; };
@@ -62,7 +61,6 @@
 		BF6AF74020310F3E005F6466 /* PlayerInputComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerInputComponent.cpp; sourceTree = "<group>"; };
 		BF6AF74120310F3E005F6466 /* PlayerInputComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerInputComponent.hpp; sourceTree = "<group>"; };
 		BF7D9640203E1D31002D0F92 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
-		BF8F1B412030D94D00F7607B /* Math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		BF8F1B422030D94D00F7607B /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
 		BFB924312029079100FC172D /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BFB924322029079100FC172D /* Entity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
@@ -112,33 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				BF7D9640203E1D31002D0F92 /* CMakeLists.txt */,
-				BF346CE0202286370025B297 /* main.cpp */,
-				BF229EAF2023C6E6004CEE08 /* ShaderLoader.cpp */,
-				BF229EB02023C6E6004CEE08 /* ShaderLoader.hpp */,
-				BFB924312029079100FC172D /* Entity.cpp */,
-				BFB924322029079100FC172D /* Entity.hpp */,
-				BFB92435202909C900FC172D /* InputComponent.hpp */,
-				BFB9243820290A2B00FC172D /* PhysicsComponent.hpp */,
-				BFB9243B20290A6E00FC172D /* GraphicsComponent.hpp */,
-				BF56C91C203239280037C443 /* AIComponent.hpp */,
-				BFB9243D20290AAB00FC172D /* World.cpp */,
-				BFB9243E20290AAB00FC172D /* World.hpp */,
-				BFB9244020290E3200FC172D /* Graphics.cpp */,
-				BFB9244120290E3200FC172D /* Graphics.hpp */,
-				BF623CFC202D08640052E752 /* Renderer.cpp */,
-				BF623CFD202D08640052E752 /* Renderer.hpp */,
-				BF8F1B412030D94D00F7607B /* Math.cpp */,
-				BF8F1B422030D94D00F7607B /* Math.hpp */,
-				BF6AF73A20310608005F6466 /* FreePhysicsComponent.cpp */,
-				BF6AF73B20310608005F6466 /* FreePhysicsComponent.hpp */,
-				BF6AF73D20310742005F6466 /* GoalPhysicsComponent.cpp */,
-				BF6AF73E20310742005F6466 /* GoalPhysicsComponent.hpp */,
-				BF6AF74020310F3E005F6466 /* PlayerInputComponent.cpp */,
-				BF6AF74120310F3E005F6466 /* PlayerInputComponent.hpp */,
-				BF56C91E203239900037C443 /* FollowEntityAIComponent.cpp */,
-				BF56C91F203239900037C443 /* FollowEntityAIComponent.hpp */,
-				BF56C9212032419E0037C443 /* JustDrawGraphicsComponent.cpp */,
-				BF56C9222032419E0037C443 /* JustDrawGraphicsComponent.hpp */,
+				BFAA45B52041FE2A005EC500 /* include */,
+				BFAA45BF2041FF05005EC500 /* src */,
 			);
 			path = PongGL;
 			sourceTree = "<group>";
@@ -153,6 +126,182 @@
 				BF346CE8202289E30025B297 /* OpenGL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BFAA45B52041FE2A005EC500 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA45B62041FE3D005EC500 /* pongGL */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		BFAA45B62041FE3D005EC500 /* pongGL */ = {
+			isa = PBXGroup;
+			children = (
+				BF8F1B422030D94D00F7607B /* Math.hpp */,
+				BFAA45B92041FE7E005EC500 /* entity */,
+				BFAA45B82041FE5A005EC500 /* graphics */,
+				BFAA45B72041FE4D005EC500 /* physics */,
+			);
+			path = pongGL;
+			sourceTree = "<group>";
+		};
+		BFAA45B72041FE4D005EC500 /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				BFB9243E20290AAB00FC172D /* World.hpp */,
+			);
+			path = physics;
+			sourceTree = "<group>";
+		};
+		BFAA45B82041FE5A005EC500 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				BF229EB02023C6E6004CEE08 /* ShaderLoader.hpp */,
+				BFB9244120290E3200FC172D /* Graphics.hpp */,
+				BF623CFD202D08640052E752 /* Renderer.hpp */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		BFAA45B92041FE7E005EC500 /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				BFB924322029079100FC172D /* Entity.hpp */,
+				BFAA45BA2041FE9A005EC500 /* component */,
+			);
+			path = entity;
+			sourceTree = "<group>";
+		};
+		BFAA45BA2041FE9A005EC500 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA45BE2041FEDB005EC500 /* ai */,
+				BFAA45BD2041FED6005EC500 /* graphics */,
+				BFAA45BC2041FECD005EC500 /* physics */,
+				BFAA45BB2041FEC8005EC500 /* input */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
+		BFAA45BB2041FEC8005EC500 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				BF6AF74120310F3E005F6466 /* PlayerInputComponent.hpp */,
+				BFB92435202909C900FC172D /* InputComponent.hpp */,
+			);
+			path = input;
+			sourceTree = "<group>";
+		};
+		BFAA45BC2041FECD005EC500 /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				BF6AF73E20310742005F6466 /* GoalPhysicsComponent.hpp */,
+				BF6AF73B20310608005F6466 /* FreePhysicsComponent.hpp */,
+				BFB9243820290A2B00FC172D /* PhysicsComponent.hpp */,
+			);
+			path = physics;
+			sourceTree = "<group>";
+		};
+		BFAA45BD2041FED6005EC500 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				BF56C9222032419E0037C443 /* JustDrawGraphicsComponent.hpp */,
+				BFB9243B20290A6E00FC172D /* GraphicsComponent.hpp */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		BFAA45BE2041FEDB005EC500 /* ai */ = {
+			isa = PBXGroup;
+			children = (
+				BF56C91F203239900037C443 /* FollowEntityAIComponent.hpp */,
+				BF56C91C203239280037C443 /* AIComponent.hpp */,
+			);
+			path = ai;
+			sourceTree = "<group>";
+		};
+		BFAA45BF2041FF05005EC500 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA45C72041FF96005EC500 /* physics */,
+				BFAA45C62041FF89005EC500 /* graphics */,
+				BFAA45C02041FF3A005EC500 /* entity */,
+				BF346CE0202286370025B297 /* main.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		BFAA45C02041FF3A005EC500 /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA45C12041FF44005EC500 /* component */,
+				BFB924312029079100FC172D /* Entity.cpp */,
+			);
+			path = entity;
+			sourceTree = "<group>";
+		};
+		BFAA45C12041FF44005EC500 /* component */ = {
+			isa = PBXGroup;
+			children = (
+				BFAA45C52041FF69005EC500 /* input */,
+				BFAA45C42041FF63005EC500 /* physics */,
+				BFAA45C32041FF5F005EC500 /* ai */,
+				BFAA45C22041FF5A005EC500 /* graphics */,
+			);
+			path = component;
+			sourceTree = "<group>";
+		};
+		BFAA45C22041FF5A005EC500 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				BF56C9212032419E0037C443 /* JustDrawGraphicsComponent.cpp */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		BFAA45C32041FF5F005EC500 /* ai */ = {
+			isa = PBXGroup;
+			children = (
+				BF56C91E203239900037C443 /* FollowEntityAIComponent.cpp */,
+			);
+			path = ai;
+			sourceTree = "<group>";
+		};
+		BFAA45C42041FF63005EC500 /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				BF6AF73A20310608005F6466 /* FreePhysicsComponent.cpp */,
+				BF6AF73D20310742005F6466 /* GoalPhysicsComponent.cpp */,
+			);
+			path = physics;
+			sourceTree = "<group>";
+		};
+		BFAA45C52041FF69005EC500 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				BF6AF74020310F3E005F6466 /* PlayerInputComponent.cpp */,
+			);
+			path = input;
+			sourceTree = "<group>";
+		};
+		BFAA45C62041FF89005EC500 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				BF623CFC202D08640052E752 /* Renderer.cpp */,
+				BF229EAF2023C6E6004CEE08 /* ShaderLoader.cpp */,
+				BFB9244020290E3200FC172D /* Graphics.cpp */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		BFAA45C72041FF96005EC500 /* physics */ = {
+			isa = PBXGroup;
+			children = (
+				BFB9243D20290AAB00FC172D /* World.cpp */,
+			);
+			path = physics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,7 +377,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF8F1B432030D94D00F7607B /* Math.cpp in Sources */,
 				BF346CE1202286370025B297 /* main.cpp in Sources */,
 				BF56C9232032419E0037C443 /* JustDrawGraphicsComponent.cpp in Sources */,
 				BFB924332029079100FC172D /* Entity.cpp in Sources */,

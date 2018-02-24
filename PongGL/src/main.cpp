@@ -2,6 +2,14 @@
 //  main.cpp
 //  PongGL
 //
+//  An implementation of Pong using a physics and OpenGL rendering engine written from scratch in C++.
+//
+//  Physics Engine features:
+//  - see World.hpp
+//
+//  OpenGL Rendering Engine features:
+//  - see Graphics.hpp
+//
 //  Created by David Paris on 31/01/2018.
 //  Copyright © 2018 David Paris. All rights reserved.
 //
@@ -18,9 +26,16 @@
 #include <thread>
 #include <GLFW/glfw3.h>
 
+
+/**
+ This game is still in development.  The below provides a demo of the physics and graphics engine.
+ 5 balls with different wieghts and velocities bounce around a frame of boundary walls.
+ **/
 int main(int argc, const char * argv[]) {
     unsigned int windowWidth = 800;
     unsigned int windowHeight = 600;
+    
+    //TODO: refactor main
     
     /***************
      * Set up GLFW
@@ -99,8 +114,10 @@ int main(int argc, const char * argv[]) {
     gameEntities.emplace_back(&rightWall);
     
     
-    double MS_PER_FRAME = 1000/60;
-    
+    /***************
+     * Game Loop
+     ***************/
+    double MS_PER_FRAME = 1000/60; //60 FPS
     while(!glfwWindowShouldClose(window))
     {
         auto t_start = std::chrono::system_clock::now();
@@ -120,6 +137,9 @@ int main(int argc, const char * argv[]) {
             glfwSetWindowShouldClose(window, GL_TRUE);
         }
         
+        //TODO: If too slow don't sleep
+        //TODO: Remove sleep using fixed update time step, with variable rendering?
+        //see: http://gameprogrammingpatterns.com/game-loop.html
         auto t_end = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = t_end-t_start;
         
@@ -129,6 +149,9 @@ int main(int argc, const char * argv[]) {
         std::this_thread::sleep_for(std::chrono::duration<double>((MS_PER_FRAME - elapsed_seconds.count()*1000)/1000));
     }
     
+    /***************
+     * End Game
+     ***************/
     glfwTerminate();
     return 0;
 }

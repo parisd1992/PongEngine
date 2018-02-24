@@ -49,7 +49,7 @@ struct Drawable
 
 /**
  The Graphics class holds the things we want to draw in the current frame
- as a Drawable.  It acts like a pipe.
+ as a Drawable.  It acts like a pipe which is read by the Renderer to render frames.
  **/
 class Graphics
 {

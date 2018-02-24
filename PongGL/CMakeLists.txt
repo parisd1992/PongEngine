@@ -22,7 +22,18 @@ pkg_search_module(GLM REQUIRED glm)
 find_package (glm REQUIRED)
 
 #Bring the headers into the project
-include_directories(${GLM_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
+include_directories(
+    ${GLM_INCLUDE_DIRS}
+    ${GLFW_INCLUDE_DIRS}
+    include/pongGL/
+    include/pongGL/entity
+    include/pongGL/entity/component
+    include/pongGL/entity/component/ai
+    include/pongGL/entity/component/graphics
+    include/pongGL/entity/component/physics
+    include/pongGL/entity/component/input
+    include/pongGL/graphics
+    include/pongGL/physics)
 
 #Specify the source files using the file(GLOB...) wildcard:
 file(GLOB_RECURSE SOURCES "*.cpp")

@@ -2,6 +2,8 @@
 //  Renderer.hpp
 //  PongGL
 //
+//  OpenGL Renderer
+//
 //  Created by David Paris on 08/02/2018.
 //  Copyright © 2018 David Paris. All rights reserved.
 //
@@ -16,6 +18,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 
+
+/**
+ Renderer is able to render a Graphics frame to screen using OpenGL.
+ 
+ Features:
+ - Entities to be drawn are added to a queue as Drawables which are read by the render engine (potential to support multiple threads).
+ - Render engine reads the queue on each render call.
+ - Render engine renders entities via a single drawElements call to the GPU using OpenGL.
+ - Uses trivial implementation of vertex and fragment shaders in GLSL.
+ **/
 class Renderer
 {
 private:

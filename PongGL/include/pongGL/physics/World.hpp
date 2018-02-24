@@ -1,6 +1,8 @@
-    //
+//
 //  World.hpp
 //  PongGL
+//
+//  Details a World class which creates a physics environment
 //
 //  Created by David Paris on 05/02/2018.
 //  Copyright © 2018 David Paris. All rights reserved.
@@ -27,6 +29,14 @@ struct Collision
 /**
  The World class is responsible for creating a 'world' environment.
  It provides physics to any Entity that belongs to it.
+ 
+ Physics Features:
+ 
+ - Physics entities travel in a straight line based on a trajectory and velocity
+ - Entities collide and change direction based on weight
+ - Velocity increases with each collision
+ - Option for entities to provide a callback to be called when there is a collision (useful for updating score)
+ - Implementation of continuous collision detection to avoid entities missing each other as their velocity increases
  **/
 class World
 {
