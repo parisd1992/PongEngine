@@ -3,6 +3,8 @@ An implementation of Pong using a physics and OpenGL rendering engine written fr
 
 [Development still in progress]
 
+Game is programmed to run at 60 FPS.
+
 ### Physics Engine features:
 (See World.hpp + screenshots below for examples)
 
