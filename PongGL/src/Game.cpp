@@ -36,14 +36,17 @@ void Game::onMessage(int message)
 
 void Game::tearDown()
 {
-    for(auto gameEntity : gameEntities)
-    {
-        delete gameEntity;
-    }
+    tearDownEntities();
 }
 
 void Game::setupEntities()
 {
+    //if we already have entities setup, then let's remove them and setup again.
+    if (!gameEntities.empty())
+    {
+        tearDownEntities();
+    }
+    
     Entity* ball1 = new Entity(0, -250.0f, 0.0f, 10, 10, 1, Math::PI/7, 5, nullptr, &freePhysics, nullptr, &justDrawGraphics);
     world.addEntity(ball1);
     gameEntities.emplace_back(ball1);
@@ -80,4 +83,13 @@ void Game::setupEntities()
     Entity* rightWall = new Entity(8, 400.0f, 0.0f, 30, 600, 0, 0, 0, nullptr, &freePhysics, nullptr, &justDrawGraphics);
     world.addEntity(rightWall);
     gameEntities.emplace_back(rightWall);
+}
+
+void Game::tearDownEntities()
+{
+    for(auto gameEntity : gameEntities)
+    {
+        delete gameEntity;
+    }
+    gameEntities.clear();
 }

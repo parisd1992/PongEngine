@@ -51,6 +51,7 @@ private:
     std::vector<Entity*> gameEntities;
 
     void setupEntities();
+    void tearDownEntities();
 };
 
 #endif /* Game_hpp */
