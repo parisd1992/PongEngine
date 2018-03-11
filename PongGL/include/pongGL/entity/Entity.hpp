@@ -18,7 +18,7 @@ class PhysicsComponent;
 class GraphicsComponent;
 class AIComponent;
 class World;
-class Graphics;
+class GraphicsPipe;
 
 /**
  An Entity is a game object with behaviour that is driven by its components.
@@ -61,7 +61,7 @@ public:
     {}
     
     /** Updates the entity's state **/
-    void update(World& world, Graphics& graphics);
+    void update(World& world, GraphicsPipe& graphics);
     
     int getId()
     {

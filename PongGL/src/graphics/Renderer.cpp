@@ -49,8 +49,12 @@ void Renderer::initShaders()
 }
 
 
-void Renderer::init()
+void Renderer::init(GraphicsPipe* frame, GLfloat screenWidth, GLfloat screenHeight)
 {
+    frame_ = frame;
+    screenWidth_ = screenWidth;
+    screenHeight_ = screenHeight;
+    
     glewExperimental = GL_TRUE;
     glewInit();
     

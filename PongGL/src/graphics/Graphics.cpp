@@ -12,7 +12,7 @@
 /**
  Adds an Entity to be drawn in the current frame
  **/
-void Graphics::addToFrame(Entity* entity)
+void GraphicsPipe::addToFrame(Entity* entity)
 {
     //points
     float left = (entity->getWidth() * -1.0f)/2;
@@ -58,7 +58,7 @@ void Graphics::addToFrame(Entity* entity)
 /**
  Returns the current frame
  **/
-std::vector<Drawable> Graphics::getCurrentFrame()
+std::vector<Drawable> GraphicsPipe::getCurrentFrame()
 {
     return frame_;
 }
@@ -66,7 +66,7 @@ std::vector<Drawable> Graphics::getCurrentFrame()
 /**
  Removes all entities from the current frame
  **/
-void Graphics::clearCurrentFrame()
+void GraphicsPipe::clearCurrentFrame()
 {
     frame_.clear();
 }

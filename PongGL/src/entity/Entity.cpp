@@ -12,7 +12,7 @@
 #include "AIComponent.hpp"
 #include "GraphicsComponent.hpp"
 
-void Entity::update(World &world, Graphics &graphics)
+void Entity::update(World &world, GraphicsPipe &graphics)
 {
     if (input_) {input_->update(*this);}
     if (physics_) {physics_->update(*this, world);}

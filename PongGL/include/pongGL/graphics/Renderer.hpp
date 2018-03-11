@@ -30,12 +30,21 @@
  **/
 class Renderer
 {
-private:
-    static const GLuint MAX_BUFFER_SIZE = 1024;
+public:
+    Renderer() {};
+    ~Renderer();
+    
+    /** initialise the renderer **/
+    void init(GraphicsPipe* frame, GLfloat screenWidth, GLfloat screenHeight);
+    
+    /** render what is in the queue (and clear it) **/
+    void render();
 
 private:
+    static const GLuint MAX_BUFFER_SIZE = 1024;
+    
     /** What we want to render this frame **/
-    Graphics* frame_;
+    GraphicsPipe* frame_;
     
     /** Screen Size **/
     GLfloat screenWidth_;
@@ -66,19 +75,6 @@ private:
     
     /** add the current frame to the buffers for rendering **/
     void addFrameToBuffers();
-    
-public:
-    
-    Renderer(Graphics* frame, GLfloat screenWidth, GLfloat screenHeight) : frame_{frame}, screenWidth_{screenWidth}, screenHeight_{screenHeight}
-    {};
-    
-    ~Renderer();
-    
-    /** initialise the renderer **/
-    void init();
-    
-    /** render what is in the queue (and clear it) **/
-    void render();
 };
 
 

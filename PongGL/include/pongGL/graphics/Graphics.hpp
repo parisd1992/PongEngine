@@ -48,10 +48,10 @@ struct Drawable
 };
 
 /**
- The Graphics class holds the things we want to draw in the current frame
+ The GraphicsPipe class holds the things we want to draw in the current frame
  as a Drawable.  It acts like a pipe which is read by the Renderer to render frames.
  **/
-class Graphics
+class GraphicsPipe
 {
 private:
     //TODO:
@@ -61,8 +61,8 @@ private:
     std::vector<Drawable> frame_;
     
 public:
-    Graphics(){}
-    ~Graphics(){}
+    GraphicsPipe(){}
+    ~GraphicsPipe(){}
     
     /**
      Adds an Entity to be drawn in the current frame

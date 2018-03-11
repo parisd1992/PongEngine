@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 class Entity;
-class Graphics;
+class GraphicsPipe;
 
 /**
  Responsble for updating an entity based on graphics
@@ -21,7 +21,7 @@ class GraphicsComponent
 {
 public:
     virtual ~GraphicsComponent() {}
-    virtual void update(Entity& o, Graphics& graphics) = 0;
+    virtual void update(Entity& o, GraphicsPipe& graphics) = 0;
 };
 
 #endif /* GraphicsComponent_hpp */

@@ -18,7 +18,7 @@ public:
     JustDrawGraphicsComponent(){}
     ~JustDrawGraphicsComponent() {}
     
-    virtual void update(Entity& o, Graphics& graphics);
+    virtual void update(Entity& o, GraphicsPipe& graphics);
 };
 
 #endif /* JustDrawGraphicsComponent_hpp */

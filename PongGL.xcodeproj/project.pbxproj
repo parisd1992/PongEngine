@@ -19,6 +19,8 @@
 		BF6AF73F20310742005F6466 /* GoalPhysicsComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF6AF73D20310742005F6466 /* GoalPhysicsComponent.cpp */; };
 		BF6AF74220310F3E005F6466 /* PlayerInputComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF6AF74020310F3E005F6466 /* PlayerInputComponent.cpp */; };
 		BF7D9641203E1D31002D0F92 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = BF7D9640203E1D31002D0F92 /* CMakeLists.txt */; };
+		BF90A0222055835700F56368 /* OpenGLView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF90A0202055835700F56368 /* OpenGLView.cpp */; };
+		BF90A02520558F7800F56368 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF90A02320558F7800F56368 /* Game.cpp */; };
 		BFB924332029079100FC172D /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB924312029079100FC172D /* Entity.cpp */; };
 		BFB9243F20290AAB00FC172D /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9243D20290AAB00FC172D /* World.cpp */; };
 		BFB9244220290E3200FC172D /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFB9244020290E3200FC172D /* Graphics.cpp */; };
@@ -62,6 +64,10 @@
 		BF6AF74120310F3E005F6466 /* PlayerInputComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerInputComponent.hpp; sourceTree = "<group>"; };
 		BF7D9640203E1D31002D0F92 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		BF8F1B422030D94D00F7607B /* Math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; };
+		BF90A0202055835700F56368 /* OpenGLView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLView.cpp; sourceTree = "<group>"; };
+		BF90A0212055835700F56368 /* OpenGLView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenGLView.hpp; sourceTree = "<group>"; };
+		BF90A02320558F7800F56368 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		BF90A02420558F7800F56368 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 		BFB924312029079100FC172D /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BFB924322029079100FC172D /* Entity.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
 		BFB92435202909C900FC172D /* InputComponent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = InputComponent.hpp; sourceTree = "<group>"; };
@@ -139,6 +145,8 @@
 		BFAA45B62041FE3D005EC500 /* pongGL */ = {
 			isa = PBXGroup;
 			children = (
+				BF90A0212055835700F56368 /* OpenGLView.hpp */,
+				BF90A02420558F7800F56368 /* Game.hpp */,
 				BF8F1B422030D94D00F7607B /* Math.hpp */,
 				BFAA45B92041FE7E005EC500 /* entity */,
 				BFAA45B82041FE5A005EC500 /* graphics */,
@@ -229,6 +237,8 @@
 				BFAA45C62041FF89005EC500 /* graphics */,
 				BFAA45C02041FF3A005EC500 /* entity */,
 				BF346CE0202286370025B297 /* main.cpp */,
+				BF90A0202055835700F56368 /* OpenGLView.cpp */,
+				BF90A02320558F7800F56368 /* Game.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -380,9 +390,11 @@
 				BF346CE1202286370025B297 /* main.cpp in Sources */,
 				BF56C9232032419E0037C443 /* JustDrawGraphicsComponent.cpp in Sources */,
 				BFB924332029079100FC172D /* Entity.cpp in Sources */,
+				BF90A0222055835700F56368 /* OpenGLView.cpp in Sources */,
 				BF6AF73F20310742005F6466 /* GoalPhysicsComponent.cpp in Sources */,
 				BF56C920203239900037C443 /* FollowEntityAIComponent.cpp in Sources */,
 				BFB9243F20290AAB00FC172D /* World.cpp in Sources */,
+				BF90A02520558F7800F56368 /* Game.cpp in Sources */,
 				BF623CFE202D08640052E752 /* Renderer.cpp in Sources */,
 				BF6AF73C20310608005F6466 /* FreePhysicsComponent.cpp in Sources */,
 				BFB9244220290E3200FC172D /* Graphics.cpp in Sources */,
